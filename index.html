@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chess Bot Playground</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><h1>♞ Chess Bot Playground</h1><span id="status">Loading Python…</span></header>
+<main>
+  <section id="editor-pane">
+    <div class="bar">
+      <select id="template"><option value="">Load template…</option>
+        <option value="random">Random mover</option>
+        <option value="greedy">Greedy captures</option>
+        <option value="minimax">Minimax (material)</option></select>
+      <input id="botname" placeholder="bot name" size="12">
+      <button id="save">Save</button>
+      <select id="saved"><option value="">Saved bots…</option></select>
+      <button id="del" title="Delete selected saved bot">🗑</button>
+      <button id="download">⬇ .py</button>
+      <label class="btn">⬆ .py<input id="upload" type="file" accept=".py" hidden></label>
+    </div>
+    <textarea id="code"></textarea>
+    <p class="hint">Define <code>choose_move(board, time_left)</code> and return a <code>chess.Move</code>. Full <a href="https://python-chess.readthedocs.io" target="_blank">python-chess</a> is available. <code>print()</code> goes to the log.</p>
+  </section>
+  <section id="game-pane">
+    <div id="board"></div>
+    <div id="banner"></div>
+    <div class="bar">
+      <label>White <select id="white"></select></label>
+      <label>Black <select id="black"></select></label>
+    </div>
+    <div class="bar">
+      <label>Time/move <input id="movetime" type="number" min="0.1" step="0.1" value="1" style="width:4em">s</label>
+      <button id="play" class="primary">▶ Play</button>
+      <button id="stop">■ Stop</button>
+      <button id="flip">⇅ Flip</button>
+    </div>
+    <div class="bar">
+      <label>Match games <input id="games" type="number" min="2" value="10" style="width:4em"></label>
+      <button id="match">Run match</button>
+      <span id="tally"></span>
+    </div>
+  </section>
+  <section id="side-pane">
+    <h3>Moves</h3><div id="moves"></div>
+    <div class="bar"><button id="pgn">Download PGN</button></div>
+    <h3>Log</h3><pre id="log"></pre>
+  </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
