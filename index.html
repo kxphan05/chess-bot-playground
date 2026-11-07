@@ -14,9 +14,20 @@
   <section id="editor-pane">
     <div class="bar">
       <select id="template"><option value="">Load template…</option>
+        <optgroup label="Learn step by step">
+          <option value="lesson1">Lesson 1 – Explore the board</option>
+          <option value="lesson2">Lesson 2 – Random bot</option>
+          <option value="lesson3">Lesson 3 – Evaluate (fill in)</option>
+          <option value="lesson4">Lesson 4 – Greedy (fill in)</option>
+          <option value="lesson5">Lesson 5 – Minimax (fill in)</option>
+          <option value="lesson6">Lesson 6 – Alpha-beta (fill in)</option>
+          <option value="lesson7">Lesson 7 – Ideas to make it yours</option>
+        </optgroup>
+        <optgroup label="Finished examples">
         <option value="random">Random mover</option>
         <option value="greedy">Greedy captures</option>
-        <option value="minimax">Minimax (material)</option></select>
+        <option value="minimax">Minimax (material)</option>
+        </optgroup></select>
       <input id="botname" placeholder="bot name" size="12">
       <button id="save">Save</button>
       <select id="saved"><option value="">Saved bots…</option></select>
@@ -24,6 +35,14 @@
       <button id="download">⬇ .py</button>
       <label class="btn">⬆ .py<input id="upload" type="file" accept=".py" hidden></label>
     </div>
+    <details id="help"><summary>New here? Start with Lesson 1 ▸ (Load template… → Learn step by step)</summary>
+      <ol>
+        <li>Pick <b>Lesson 1</b> from <i>Load template…</i>, press <b>▶ Play</b> (set Black to “My bot (editor)”), read the <b>Log</b>.</li>
+        <li>Lessons 3–6 have <code># TODO</code> lines. Replace them yourself, then play your bot against Random / Greedy.</li>
+        <li>Stuck? The Log explains errors in plain words. The finished examples at the bottom of the menu are a last resort.</li>
+      </ol>
+      <p><b>Minimax in one line:</b> “I pick the move that leaves me best off, assuming you answer with the move that leaves <i>me</i> worst off.”</p>
+    </details>
     <textarea id="code"></textarea>
     <p class="hint">Define <code>choose_move(board, time_left)</code> and return a <code>chess.Move</code>. Full <a href="https://python-chess.readthedocs.io" target="_blank">python-chess</a> is available. <code>print()</code> goes to the log.</p>
   </section>

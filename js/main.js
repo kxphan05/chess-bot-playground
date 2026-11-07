@@ -76,7 +76,7 @@ async function playGame(w, b, limit, myToken) {
     await slots[p.slot].ready;
     let err = await slots[p.slot].callTimed("load", { src: p.src, name: p.name }, 5000);
     if (err && err.timeout) err = "Timed out while loading (infinite loop at top level?)";
-    if (err) { log(`${p.name} failed to load:\n${err}`, true); return { result: p === w ? "0-1" : "1-0", reason: `${p.name} has an error`, ucis: [] }; }
+    if (err) { log(`${p.name} could not start - fix this first:\n${err}`, true); return { result: p === w ? "0-1" : "1-0", reason: `${p.name} has an error`, ucis: [] }; }
   }
   const ucis = [];
   current = { ucis, white: w.name, black: b.name, result: "*" };
@@ -100,7 +100,7 @@ async function playGame(w, b, limit, myToken) {
       const r = await slots[p.slot].callTimed("move", { fen: st.fen, timeLeft: limit }, limit * 1000 + 1500);
       if (myToken !== token) return { result: "*", reason: "stopped", ucis };
       const lose = (reason) => ({ result: turnWhite ? "0-1" : "1-0", reason: `${p.name} ${reason}`, ucis });
-      if (r.timeout) { log(`${p.name} exceeded the time limit; worker killed.`, true); return lose("lost on time"); }
+      if (r.timeout) { log(`${p.name} took longer than ${limit}s (+1.5s grace) so it lost on time.\nHINT: lower your search depth (try DEPTH = 2), add alpha-beta pruning, or raise "Time/move" next to the Play button. Infinite loops cause this too.`, true); return lose("lost on time"); }
       if (r.out) log(`[${p.name}] ${r.out.trimEnd()}`);
       if (r.err) { log(`[${p.name}] ${r.err}`, true); return lose("forfeits (error / illegal move)"); }
       uci = r.uci;
