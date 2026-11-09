@@ -9,6 +9,11 @@ Python runs client-side via [Pyodide](https://pyodide.org) (WebAssembly) with
 Deploy by uploading the `web/` folder to GitHub Pages / Netlify / any static host.
 (First load downloads ~10 MB of Pyodide + python-chess from a CDN; the browser caches it.)
 
+## Learn
+`learn.html` = **Chess Bot Quest**: 7 visual, interactive levels (pure JS, loads instantly), each with a
+**Try it ▶** link that opens the matching lesson in the playground (`index.html?lesson=N`).
+`index.html?white=b:random&black=me` preselects players.
+
 ## Bot API
 ```python
 import chess

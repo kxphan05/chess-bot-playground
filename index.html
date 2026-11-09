@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header><h1>♞ Chess Bot Playground</h1><span id="status">Loading Python…</span></header>
+<header><h1>♞ Chess Bot Playground</h1><span id="status">Loading Python…</span><a class="btn quest" href="learn.html">🎮 Learn: Chess Bot Quest</a></header>
 <main>
   <section id="editor-pane">
     <div class="bar">
@@ -35,14 +35,7 @@
       <button id="download">⬇ .py</button>
       <label class="btn">⬆ .py<input id="upload" type="file" accept=".py" hidden></label>
     </div>
-    <details id="help"><summary>New here? Start with Lesson 1 ▸ (Load template… → Learn step by step)</summary>
-      <ol>
-        <li>Pick <b>Lesson 1</b> from <i>Load template…</i>, press <b>▶ Play</b> (set Black to “My bot (editor)”), read the <b>Log</b>.</li>
-        <li>Lessons 3–6 have <code># TODO</code> lines. Replace them yourself, then play your bot against Random / Greedy.</li>
-        <li>Stuck? The Log explains errors in plain words. The finished examples at the bottom of the menu are a last resort.</li>
-      </ol>
-      <p><b>Minimax in one line:</b> “I pick the move that leaves me best off, assuming you answer with the move that leaves <i>me</i> worst off.”</p>
-    </details>
+    <div id="help">🆕 New here? <a href="learn.html">🎮 Play the 7-level quest</a> · or pick <b>Lesson 1</b> from <i>Load template…</i> and press <b>▶ Play</b></div>
     <textarea id="code"></textarea>
     <p class="hint">Define <code>choose_move(board, time_left)</code> and return a <code>chess.Move</code>. Full <a href="https://python-chess.readthedocs.io" target="_blank">python-chess</a> is available. <code>print()</code> goes to the log.</p>
   </section>

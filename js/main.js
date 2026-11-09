@@ -16,7 +16,18 @@ const BUILTIN = {
 const cm = CodeMirror.fromTextArea($("code"), { mode: "python", theme: "material-darker", lineNumbers: true, indentUnit: 4, indentWithTabs: false,
   extraKeys: { Tab: (c) => c.replaceSelection("    ") } });
 const text = (url) => fetch(url).then((r) => r.text());
-text("py/templates/minimax.py").then((t) => cm.setValue(store.loadDraft() ?? t));
+const params = new URLSearchParams(location.search);
+const lessonParam = /^[1-7]$/.test(params.get("lesson") || "") ? params.get("lesson") : null;
+if (lessonParam) text(`py/templates/lesson${lessonParam}.py`).then((t) => {
+  const draft = store.loadDraft();
+  if (draft && draft.trim() && draft !== t) { // never silently lose someone's work
+    store.saveBot("backup (before lesson)", draft); refreshSaved();
+    log('Your previous editor code was saved as "backup (before lesson)" in Saved bots.');
+  }
+  cm.setValue(t); $("botname").value = "lesson" + lessonParam;
+  history.replaceState(null, "", location.pathname); // so a reload doesn't reload the lesson
+});
+else text("py/templates/minimax.py").then((t) => cm.setValue(store.loadDraft() ?? t));
 cm.on("change", () => store.saveDraft(cm.getValue()));
 
 function refreshSaved() {
@@ -31,6 +42,7 @@ function refreshSaved() {
 }
 refreshSaved();
 $("white").value = "human"; $("black").value = "me";
+for (const side of ["white", "black"]) { const v = params.get(side); if (v && [...$(side).options].some((o) => o.value === v)) $(side).value = v; }
 
 $("template").onchange = async (e) => { if (e.target.value) cm.setValue(await text(`py/templates/${e.target.value}.py`)); e.target.value = ""; };
 $("save").onclick = () => { const n = $("botname").value.trim(); if (!n) return alert("Enter a bot name"); store.saveBot(n, cm.getValue()); refreshSaved(); log(`Saved "${n}"`); };

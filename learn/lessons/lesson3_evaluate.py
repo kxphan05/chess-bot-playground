@@ -1,27 +1,17 @@
-# LESSON 3 - Evaluation: how good is this position?
-# Check yourself:  python tools/check.py lessons/lesson3_evaluate.py
-#
-# Hint: loop over board.piece_map().values(). For each piece look up its value in
-# PIECE_VALUES[piece.piece_type]. Add it if piece.color == chess.WHITE, subtract if BLACK.
-import chess
-import random
+# ⚖️ LEVEL 3 · Count the treasure
+# ⚪ White pieces add, ⚫ Black pieces subtract.   ♟1 ♞3 ♝3 ♜5 ♛9
+import chess, random
 
-PIECE_VALUES = {
-    chess.PAWN: 1,
-    chess.KNIGHT: 3,
-    chess.BISHOP: 3,
-    chess.ROOK: 5,
-    chess.QUEEN: 9,
-    chess.KING: 0,     # kings are never captured, so they don't count
-}
+VALUES = {chess.PAWN: 1, chess.KNIGHT: 3, chess.BISHOP: 3,
+          chess.ROOK: 5, chess.QUEEN: 9, chess.KING: 0}
 
 def evaluate(board):
-    """Return a number: positive = White is ahead, negative = Black is ahead."""
     score = 0
-    # TODO: loop over the pieces and update score
+    for piece in board.piece_map().values():
+        value = VALUES[piece.piece_type]
+        # 👉 YOUR TURN: add value if piece.color == chess.WHITE, else subtract
     return score
 
 def choose_move(board, time_left):
-    # Not a real bot yet - we just print the score so you can see evaluate working.
-    print("evaluation:", evaluate(board))
+    print("⚖️ score:", evaluate(board))      # watch it change in the Log
     return random.choice(list(board.legal_moves))

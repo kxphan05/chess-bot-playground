@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chess Bot Quest – learn by playing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/learn.css">
+</head>
+<body>
+<header>
+  <h1>♞ Chess Bot Quest</h1>
+  <a class="btn" href="index.html">🛠 Playground</a>
+</header>
+
+<section id="hero">
+  <div class="hero-big">🤖 + ♟ = 🏆</div>
+  <p>Build a chess bot in <b>7 levels</b>. Poke the toys, then press <b>Try it ▶</b>.</p>
+  <div id="xp"><div id="xpfill"></div><span id="xptext">0 / 7</span></div>
+  <nav id="map"></nav>
+</section>
+
+<section class="api">
+  <div class="api-card">
+    <div class="api-in">♟ <code>board</code></div>
+    <div class="api-arrow">➜</div>
+    <div class="api-fn"><code>choose_move()</code><br><small>your code</small></div>
+    <div class="api-arrow">➜</div>
+    <div class="api-out">🎯 <code>chess.Move</code></div>
+  </div>
+  <p class="tiny">That's the whole game. Everything below is about making <code>choose_move</code> smarter.</p>
+</section>
+
+<main id="levels"></main>
+
+<section id="bosses" class="level">
+  <h2>🏆 Boss ladder</h2>
+  <p class="mission">Beat each boss in the playground (set Black to <i>My bot</i>). Tick it when you win!</p>
+  <div id="ladder"></div>
+</section>
+
+<footer>Made for TAISP scholars · <a href="index.html">open the playground</a></footer>
+<div id="fx"></div>
+<script type="module" src="js/learn.js"></script>
+</body>
+</html>
