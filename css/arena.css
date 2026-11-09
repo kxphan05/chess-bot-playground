@@ -1,0 +1,26 @@
+main.arena { grid-template-columns: auto minmax(320px, 1fr); }
+@media (max-width:900px){ main.arena{ grid-template-columns:1fr; } }
+#vs { font-size:1.1em; margin-bottom:.5em; min-height:1.4em; }
+#r-ply { opacity:.7; font-variant-numeric:tabular-nums; }
+#r-result { font-weight:600; min-height:1.4em; }
+.tabs { display:flex; gap:.3em; margin-bottom:.6em; flex-wrap:wrap; }
+.tabs button.on { background:#2f6feb; border-color:#2f6feb; }
+.tiny { opacity:.7; font-size:12px; margin:.3em 0; }
+table.standings { width:100%; border-collapse:collapse; margin:.4em 0; }
+.standings th, .standings td { padding:.3em .4em; text-align:left; border-bottom:1px solid #333; }
+.standings tr:nth-child(2) td { background:#3a3320; }
+.standings small { opacity:.65; }
+.standings .broken td { color:#ff8585; }
+.warn { cursor:help; }
+.games { display:flex; flex-direction:column; gap:3px; max-height:320px; overflow:auto; }
+.game { text-align:left; display:flex; gap:.5em; align-items:baseline; }
+.game .res { min-width:2.4em; font-weight:700; }
+.game small { margin-left:auto; opacity:.6; }
+.game.live { border-color:#e5484d; }
+#fighters { display:flex; flex-wrap:wrap; gap:.3em; }
+.fighter { background:#33373f; border:1px solid #444a55; border-radius:5px; padding:.3em .6em; cursor:pointer; }
+.tag { opacity:.6; font-size:11px; } .tag.official { color:#f6c84c; opacity:.9; }
+.bar input[type=number] { width:4em; }
+.steps li { margin:.4em 0; } .steps pre { background:#16181b; padding:.4em; border-radius:5px; margin:.3em 0; }
+#log { max-height:160px; overflow:auto; background:#16181b; padding:.5em; border-radius:5px; white-space:pre-wrap; font-size:12px; margin:.4em 0 0; }
+#log:empty { display:none; }

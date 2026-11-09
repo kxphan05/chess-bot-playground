@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bot Arena – Chess Bot Playground</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/arena.css">
+</head>
+<body>
+<header><h1>⚔️ Bot Arena</h1><span id="status"></span>
+  <a class="btn quest" href="index.html">🛠 Playground</a><a class="btn" href="learn.html">🎮 Quest</a></header>
+<main class="arena">
+  <section id="stage">
+    <div id="vs">Pick a game to watch ▶</div>
+    <div id="board"></div>
+    <div class="bar" id="replay-bar">
+      <button id="r-first" title="Start">⏮</button><button id="r-prev" title="Back">◀</button>
+      <button id="r-play" title="Play / pause">⏯</button>
+      <button id="r-next" title="Forward">▶</button><button id="r-last" title="End">⏭</button>
+      <span id="r-ply"></span>
+      <button id="r-live" hidden>📺 Back to live</button>
+    </div>
+    <div id="r-result"></div>
+  </section>
+
+  <section id="panel">
+    <nav class="tabs"><button data-tab="official" class="on">🏆 Leaderboard</button><button data-tab="battle">⚔️ Battle now</button><button data-tab="enter">📝 Enter a bot</button></nav>
+
+    <div id="tab-official" class="tab">
+      <p class="tiny" id="o-info">Loading…</p>
+      <table id="o-table" class="standings"></table>
+      <h3>Games</h3>
+      <div id="o-games" class="games"></div>
+    </div>
+
+    <div id="tab-battle" class="tab" hidden>
+      <p class="tiny">Runs right here in your browser. Pick 2+ fighters.</p>
+      <div id="fighters"></div>
+      <div class="bar">
+        <label class="btn">➕ Add .py files<input id="add" type="file" accept=".py" multiple hidden></label>
+      </div>
+      <div class="bar">
+        <label>Games per pair <input id="b-games" type="number" min="1" max="20" value="2"></label>
+        <label>Sec/move <input id="b-time" type="number" min="0.1" step="0.1" value="1"></label>
+      </div>
+      <div class="bar"><button id="b-start" class="primary">⚔️ Fight!</button><button id="b-stop" disabled>■ Stop</button><span id="b-progress"></span></div>
+      <table id="b-table" class="standings"></table>
+      <div id="b-list" class="games"></div>
+      <div class="bar"><button id="b-pgn" disabled>⬇ PGN</button><button id="b-json" disabled>⬇ results.json</button></div>
+      <pre id="log"></pre>
+    </div>
+
+    <div id="tab-enter" class="tab" hidden>
+      <ol class="steps">
+        <li>Build your bot in the <a href="index.html">Playground</a>. Press <b>⬇ .py</b>.</li>
+        <li>Add 2 lines at the top:<pre># name: My Cool Bot
+# author: Your Name</pre></li>
+        <li>Put the file in the <code>bots/</code> folder on GitHub (pull request, or send it to the organiser).</li>
+        <li>A robot checks it ✅. Once merged, the official tournament reruns and this leaderboard updates by itself.</li>
+      </ol>
+      <h3>📜 Rules</h3>
+      <ul class="steps">
+        <li>Python + <code>chess</code> only. No engines, no internet.</li>
+        <li>Crash, illegal move or too slow = you lose that game.</li>
+        <li>Win 1 · draw ½ · loss 0. After 100 moves it's a draw.</li>
+        <li>Be ready to explain your bot! 🧠</li>
+      </ul>
+      <p class="tiny">Try it first: <b>⚔️ Battle now</b> → <b>➕ Add .py files</b> → fight the house bots.</p>
+    </div>
+  </section>
+</main>
+<script type="module" src="js/arena.js"></script>
+</body>
+</html>

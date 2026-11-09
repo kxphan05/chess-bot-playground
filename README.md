@@ -5,14 +5,19 @@ Python runs client-side via [Pyodide](https://pyodide.org) (WebAssembly) with
 [python-chess](https://python-chess.readthedocs.io). It's a static site: no backend.
 
 ## Run locally
-    cd web && python3 -m http.server 8000     # open http://localhost:8000
-Deploy by uploading the `web/` folder to GitHub Pages / Netlify / any static host.
+    python3 -m http.server 8000     # open http://localhost:8000
+Deploy by uploading this folder to GitHub Pages / Netlify / any static host.
 (First load downloads ~10 MB of Pyodide + python-chess from a CDN; the browser caches it.)
 
 ## Learn
 `learn.html` = **Chess Bot Quest**: 7 visual, interactive levels (pure JS, loads instantly), each with a
 **Try it ▶** link that opens the matching lesson in the playground (`index.html?lesson=N`).
 `index.html?white=b:random&black=me` preselects players.
+
+## Arena (bot battles)
+`arena.html` = official leaderboard + replays (from `bots/arena.json`), **Battle now** (in-browser round-robin
+of any bots: official, saved, or uploaded `.py`), and how to enter. Bots live in `bots/`; the
+`Bot Arena` GitHub Action checks PRs and reruns the tournament on every merge. See `learn/TOURNAMENT.md`.
 
 ## Bot API
 ```python

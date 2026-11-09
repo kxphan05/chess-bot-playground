@@ -1,0 +1,6 @@
+# name: My Cool Bot
+# author: Your Name
+import chess, random
+
+def choose_move(board, time_left):
+    return random.choice(list(board.legal_moves))

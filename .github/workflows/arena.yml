@@ -1,0 +1,85 @@
+# Bot Arena: runs the official round-robin and publishes bots/arena.json,
+# which arena.html shows as the leaderboard + replayable games.
+#
+#  - Pull request that adds/changes bots/*.py  -> quick check: each changed bot
+#    plays 2 games vs House Random. Nothing is committed.
+#  - Push to main touching bots/*.py, or "Run workflow" button -> full tournament,
+#    then bots/arena.json + bots/leaderboard.md are committed.
+#
+# Safety: bot code only ever runs in jobs with a READ-ONLY token. The job that
+# commits never executes bot code; it only copies the JSON produced earlier.
+name: Bot Arena
+
+on:
+  pull_request:
+    paths: ["bots/*.py"]
+  push:
+    branches: [main]
+    paths: ["bots/*.py"]
+  workflow_dispatch:
+    inputs:
+      rounds: { description: "Rounds (each = 1 game as White + 1 as Black)", default: "1" }
+      time:   { description: "Seconds per move", default: "1" }
+
+concurrency:
+  group: arena-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install chess
+      - name: Changed bots vs House Random
+        run: |
+          mkdir -p /tmp/check && cp bots/house_random.py /tmp/check/
+          git diff --name-only --diff-filter=AM origin/${{ github.base_ref }}...HEAD -- 'bots/*.py' | xargs -r -I{} cp {} /tmp/check/
+          ls /tmp/check
+          python learn/tools/tournament.py /tmp/check --rounds 1 --time 1 --out /tmp/check.md
+          cat /tmp/check.md >> "$GITHUB_STEP_SUMMARY"
+          ! grep -qE "illegal|crashed|on time" /tmp/check.md || echo "::warning::A bot lost games by crashing / illegal move / timeout - see the Problems column"
+          ! grep -q "could not load" /tmp/check.md || { echo "::error::A bot could not load - see the table above"; exit 1; }
+
+  tournament:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install chess
+      - name: Round-robin
+        run: |
+          mkdir -p /tmp/out
+          python learn/tools/tournament.py bots --rounds "${{ inputs.rounds || '1' }}" --time "${{ inputs.time || '1' }}" \
+            --out /tmp/out/leaderboard.md --json /tmp/out/arena.json 2>&1 | tail -n 40 || true
+          test -s /tmp/out/arena.json
+          cat /tmp/out/leaderboard.md >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        with: { name: arena, path: /tmp/out/ }
+
+  publish:
+    needs: tournament
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: arena, path: /tmp/out }
+      - name: Commit results
+        run: |
+          python3 -c "import json; json.load(open('/tmp/out/arena.json'))"   # must be valid JSON
+          cp /tmp/out/arena.json /tmp/out/leaderboard.md bots/
+          git config user.name "arena-bot"; git config user.email "arena-bot@users.noreply.github.com"
+          git add bots/arena.json bots/leaderboard.md
+          git diff --cached --quiet || { git commit -m "Arena: update leaderboard"; git push; }

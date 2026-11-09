@@ -1,19 +1,32 @@
-# Taisp Scholars Chess Bot Tournament (proposal)
+# ⚔️ TAISP Bot Tournament
 
-## Flow
-1. Scholars finish lessons 1–6 in the playground, then improve their bot (lesson 7 ideas).
-2. Each scholar saves their bot as `firstname.py` (must define `choose_move(board, time_left)`) and submits it (shared folder / repo PR).
-3. The organiser runs: `python tools/tournament.py submissions/ --rounds 2 --time 2`
-   -> prints and writes `leaderboard.md` (round-robin, both colours, crash/illegal/timeout = loss).
-4. Optional live finale: top 4 replay in the playground's N-game match view, projected on screen.
+Live page: **arena.html** (🏆 Leaderboard · ⚔️ Battle now · 📝 Enter a bot)
 
-## Rules (suggested)
-- Python + `chess` only, no engines (e.g. Stockfish), no opening-book downloads, no network.
-- Per-move limit 2 s. Bots must be handwritten by the scholar; be ready to explain your evaluation and search.
-- Prizes could include "best explanation" and "most improved", not only strongest bot, to keep it friendly.
+## 🧑‍🎓 Scholars
+1. Build a bot in the Playground → **⬇ .py**
+2. Top of the file:
+   ```python
+   # name: My Cool Bot
+   # author: Your Name
+   ```
+3. Test it: Arena → **⚔️ Battle now** → **➕ Add .py files** → fight the house bots
+4. Submit: pull request adding `bots/yourname.py` (or send the file to the organiser)
 
-## Notes / caveats
-- Round-robin cost: N bots × (N-1)/2 pairs × 4 games. 12 bots ≈ 264 games; each game can take minutes with deeper bots, so run it unattended.
-- Submitted bots are arbitrary code and run with full access: run on a throwaway machine/container, and skim files first.
-- Early test with the reference bots: many games draw (200-ply cap), so ranking separates weak bots from strong but ties are common among decent ones. Consider more rounds, or random opening positions, for the real event.
-- Uses `signal.alarm`: Linux/macOS only.
+## 🧑‍🏫 Organiser
+| When | What happens (`.github/workflows/arena.yml`) |
+|---|---|
+| PR adds a bot | ✅ check: plays 2 games vs House Random, table in the PR's Checks tab |
+| PR merged to `main` | 🏆 full round-robin → commits `bots/arena.json` + `bots/leaderboard.md` → site updates |
+| Actions → Bot Arena → **Run workflow** | rerun with custom rounds / seconds per move |
+
+Offline: `python learn/tools/tournament.py bots --rounds 1 --time 1 --json bots/arena.json`
+
+## 📜 Rules
+- Python + `chess` only. No engines, no internet.
+- Crash / illegal move / too slow (time + 1.5 s) = lose that game. Over 5 s to start = can't enter.
+- Win 1 · draw ½ · loss 0 · 100-move cap = draw.
+- Prizes idea: 🥇 strongest · 🧠 best explanation · 📈 most improved.
+
+## ⚠️ Notes
+- Cost grows fast: N bots → N×(N−1) games per round. 12 bots ≈ 132 games ≈ 30–90 min on GitHub (free for public repos, 5 h limit set).
+- Bot code runs only in a read-only CI job; the commit job never runs bot code. Still skim PRs before merging.
